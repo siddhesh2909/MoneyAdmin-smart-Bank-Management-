@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI Fund Transfer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <style>
+        body {
+            height: 100vh;
+            width: 100%;
+            background: linear-gradient(to bottom, #175d69 23%, #330c43 95%);
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        #nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar {
+            background: linear-gradient(to bottom, #175d69 23%, #175d69 95%);
+            padding: 10px !important;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            padding-left: 20px;
+        }
+
+        .navbar-nav li {
+            padding: 0 10px;
+        }
+
+        .navbar-nav li a {
+            color: #fff;
+            font-weight: 600;
+            float: right;
+            font-size: 20px;
+            text-align: left !important;
+        }
+
+        .main {
+            margin-top: 100px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error {
+            height: 15px;
+            color: red;
+            font-size: 12px;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid white;
+            color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+       
+        .card input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .card input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .btn-primary {
+            background-color: #175d69;
+            border-color: #175d69;
+            font-size: 18px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .row{
+            margin-top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <section id="nav-bar">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="Index.html"><img src="demo-logo.png" alt="LOGO"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="LoginDashboard.jsp">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">AboutUs</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="LoginView.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </section>
+    <section class="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 transfer">
+                    <div class="card mx-auto" style="width: 25rem;">
+                        <div class="card-body">
+                            <form id="transferForm" action="TransferController">
+                                <h5 class="card-title text-center">UPI Fund Transfer</h5>
+                                <p>UPI ID  :</p>
+                                <input type="text" id="upiId" placeholder="Enter UPI ID" name="upiId" required>
+                                <div class="error" id="upiIdError"></div>
+                                <p>Amount :</p>
+                                <input type="text" id="amount" placeholder="Enter Amount" name="price" required>
+                                <div class="error" id="amountError"></div>
+                                <input type="radio" id="UPI" name="type" value="UPI" checked style="visibility: hidden; height: 0px; width: 0px;">                                                        
+                                
+                                <button type="button" class="btn btn-primary" onclick="validateForm()">Transfer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <script>
+        function validateForm() {
+            var upiId = document.getElementById("upiId").value;
+            var amount = document.getElementById("amount").value;
+
+            var upiIdError = document.getElementById("upiIdError");
+            var amountError = document.getElementById("amountError");
+
+            upiIdError.textContent = "";
+            amountError.textContent = "";
+
+            var isValid = true;
+
+            // UPI ID or Mobile Number validation
+            if (!isValidUPI(upiId)) {
+                upiIdError.textContent = "Please enter a valid UPI ID or Mobile Number.";
+                isValid = false;
+            }
+
+            // Amount validation
+            if (isNaN(amount) || parseFloat(amount) <= 0) {
+                amountError.textContent = "Please enter a valid amount.";
+                isValid = false;
+            }
+
+            if (isValid) {
+                document.getElementById("transferForm").submit();
+            }
+        }
+
+        function isValidUPI(upiId) {
+            // UPI ID or Mobile Number validation
+            return /^[a-zA-Z0-9._-]+@oksbi$/.test(upiId) || /^[0-9]{10}$/.test(upiId);
+        }
+    </script>
+</body>
+</html>
+
+
